@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
-use App\Http\Resources\UserResource;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\Interfaces\UserServiceInterface;
 
@@ -14,8 +13,6 @@ class UserService implements UserServiceInterface
 
     public function list($params)
     {
-        $users = $this->userRepository->list($params);
-
-        return UserResource::collection($users);
+        return $this->userRepository->list($params);
     }
 }

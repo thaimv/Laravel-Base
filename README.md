@@ -1,4 +1,11 @@
-# Laravel base project
+# Laravel 11 base project
+
+### Version Infos
+```
+Laravel: 11.42.1
+PHP: 8.4.4
+MySQL: 8.0
+```
 
 ### Up docker-compose
 ```
@@ -7,6 +14,7 @@ docker compose exec php bash
 composer install
 cp .env.example .env
 php artisan key:generate 
+php artisan jwt:secret
 php artisan migrate
 php artisan db:seed
 ```
@@ -21,9 +29,12 @@ Step 4: Custom channels at config/logging.php: use tap to custom config Proccess
 
 - Handle exception and response
 
-- JWT
-- Socialite ?
-- Swagger document
-- Export with ....
+- JWT Auth
+
+Comming soon:
 - FE with docker?
+- Swagger document
+- Forgot password with mail.
+- Export with ....
+- Socialite
 ```

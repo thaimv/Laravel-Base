@@ -9,10 +9,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
-        "prettus/l5-repository": "^2.9"
+        "prettus/l5-repository": "^2.9",
+        "tymon/jwt-auth": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

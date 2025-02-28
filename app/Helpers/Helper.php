@@ -12,7 +12,7 @@ class Helper
         $params['per_page'] = $params['per_page'] ?? config('common.default_per_page');
     }
 
-    public static function formatDate($date, $format = 'Y/m/d H:i:s')
+    public static function formatDateTime($date, $format = 'Y/m/d H:i:s')
     {
         return is_null($date) ? null : Carbon::parse($date)->format($format);
     }

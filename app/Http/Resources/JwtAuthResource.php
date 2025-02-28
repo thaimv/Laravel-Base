@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class UserResource extends BaseResource
+class JwtAuthResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +15,9 @@ class UserResource extends BaseResource
     public function toArray(Request $request)
     {
         return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'name' => $this->name,
+            'access_token' => $this['access_token'],
+            'expires_in' => $this['expires_in'],
+            'user'=> UserResource::make(Auth::user()),
         ];
     }
 }

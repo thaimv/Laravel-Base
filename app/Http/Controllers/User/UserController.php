@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\User\ListRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -23,7 +24,7 @@ class UserController extends BaseController
             $params = $request->validated();
             $data = $this->userService->list($params);
 
-            return $this->responseSuccess(UserResource::collection($data));
+            return $this->responseSuccess(UserResource::collection($data), __('response.success.get'));
         } catch (\Exception $exception) {
             return $this->handleException($exception);
         }
