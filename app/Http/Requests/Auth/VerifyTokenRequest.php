@@ -3,9 +3,11 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\Auth\VerifyTokenRule;
 
-class LoginRequest extends BaseRequest
+class VerifyTokenRequest extends BaseRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,19 +23,14 @@ class LoginRequest extends BaseRequest
      */
     public function rules(): array
     {
-        return [
-            'email' => [
-                'required',
-                'string',
-                'max:50',
-                'exists:users,email',
-            ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'max:50',
-            ],
-        ];
+        return array_merge(
+            new ForgotPasswordRequest()->rules(),
+            [
+                'token' => [
+                    'required',
+                    new VerifyTokenRule($this->email ?? null),
+                ],
+            ]
+        );
     }
 }

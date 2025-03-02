@@ -3,15 +3,24 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\VerifyTokenRequest;
 use App\Http\Resources\JwtAuthResource;
 use App\Http\Resources\UserResource;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Support\Arr;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends BaseController
 {
+    public function __construct(
+        public AuthServiceInterface $authService,
+    ) {
+        //
+    }
+
     /**
      * Login
      *
@@ -22,16 +31,9 @@ class AuthController extends BaseController
     {
         try {
             $params = $request->validated();
-            $credentials = Arr::only($params, ['email', 'password']);
+            $data = $this->authService->login($params);
 
-            if (!$token = Auth::attempt($credentials)) {
-                throw new AuthenticationException(__('auth.failed'));
-            }
-
-            return $this->responseSuccess(JwtAuthResource::make([
-                'access_token' => $token,
-                'expires_in' => Auth::factory()->getTTL() * 60,
-            ]));
+            return $this->responseSuccess(JwtAuthResource::make($data));
         } catch (\Exception $exception) {
             return $this->handleException($exception);
         }
@@ -45,10 +47,9 @@ class AuthController extends BaseController
     public function refreshToken()
     {
         try {
-            return $this->responseSuccess(JwtAuthResource::make([
-                'access_token' => Auth::refresh(),
-                'expires_in' => Auth::factory()->getTTL() * 60,
-            ]));
+            $data = $this->authService->refreshToken();
+
+            return $this->responseSuccess(JwtAuthResource::make($data));
         } catch (\Exception $exception) {
             return $this->handleException($exception);
         }
@@ -79,6 +80,63 @@ class AuthController extends BaseController
 
             return $this->responseSuccess([]);
         } catch (\Exception $exception) {
+            return $this->handleException($exception);
+        }
+    }
+
+    /**
+     * Forgot password
+     *
+     * @param ForgotPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $params = $request->validated();
+            $this->authService->forgotPassword($params['email']);
+            DB::commit();
+
+            return $this->responseSuccess([]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->handleException($exception);
+        }
+    }
+
+    /**
+     * Verify token
+     *
+     * @param VerifyTokenRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyToken(VerifyTokenRequest $request)
+    {
+        try {
+            return $this->responseSuccess([]);
+        } catch (\Exception $exception) {
+            return $this->handleException($exception);
+        }
+    }
+
+    /**
+     * Reset password
+     *
+     * @param ResetPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $params = $request->validated();
+            $this->authService->resetPassword($params);
+            DB::commit();
+
+            return $this->responseSuccess([]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->handleException($exception);
         }
     }

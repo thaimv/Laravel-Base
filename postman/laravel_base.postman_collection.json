@@ -1,267 +1,420 @@
 {
-	"info": {
-		"_postman_id": "42287e36-bdfc-4135-ba1b-64e5aa311f82",
-		"name": "Laravel-11-base",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16795564"
-	},
-	"item": [
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"TOKEN\", pm.response.json().data.access_token);",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/api/v1/login",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"TOKEN\", pm.response.json().data.access_token);",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/api/v1/refresh-token",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"refresh-token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/api/v1/logout",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get me",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set(\"TOKEN\", pm.response.json().data.access_token);",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/api/v1/get-me",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"get-me"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{HOST}}/api/v1/users",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"users"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{TOKEN}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	]
+    "info": {
+        "_postman_id": "42287e36-bdfc-4135-ba1b-64e5aa311f82",
+        "name": "Laravel-11-base",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "16795564"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.environment.set(\"TOKEN\", pm.response.json().data.access_token);",
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/login",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Refresh token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.environment.set(\"TOKEN\", pm.response.json().data.access_token);",
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/refresh-token",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "refresh-token"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/logout",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "logout"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get me",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\" : \"test@example.com\",\n    \"password\": \"password\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/get-me",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "get-me"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "item": [
+                {
+                    "name": "List",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/users",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "users"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Forgot Password",
+            "item": [
+                {
+                    "name": "Forgot password",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\" : \"thaimv@hblab.vn\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/forgot-password",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "forgot-password"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reset password",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/reset-password?token=%242y%2412%24ga7hO3Uopx3tMLU93VO9BOlOCnfzj4DCkpfpCvYE3cIjJDPkLmBEO&email=thaimv%40hblab.vn",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reset-password"
+                            ],
+                            "query": [
+                                {
+                                    "key": "token",
+                                    "value": "%242y%2412%24ga7hO3Uopx3tMLU93VO9BOlOCnfzj4DCkpfpCvYE3cIjJDPkLmBEO"
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "thaimv%40hblab.vn"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Verify token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    ""
+                                ],
+                                "type": "text/javascript",
+                                "packages": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{HOST}}/api/v1/verify-token?token=%242y%2412%24ga7hO3Uopx3tMLU93VO9BOlOCnfzj4DCkpfpCvYE3cIjJDPkLmBEO&email=thaimv%40hblab.vn",
+                            "host": [
+                                "{{HOST}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "verify-token"
+                            ],
+                            "query": [
+                                {
+                                    "key": "token",
+                                    "value": "%242y%2412%24ga7hO3Uopx3tMLU93VO9BOlOCnfzj4DCkpfpCvYE3cIjJDPkLmBEO"
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "thaimv%40hblab.vn"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{TOKEN}}",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ]
 }
