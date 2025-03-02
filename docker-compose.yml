@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     tty: true
+    ports:
+        - "5173:5173"
     volumes:
       - .:/var/www
     networks:

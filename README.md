@@ -32,7 +32,6 @@ Step 4: Custom channels at config/logging.php: use tap to custom config Proccess
 - JWT Auth
 
 Comming soon:
-- FE with docker?
 - Swagger document
 - Forgot password with mail.
 - Export with ....
