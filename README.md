@@ -2,7 +2,7 @@
 
 ### Version Infos
 ```
-Laravel: 11.42.1
+Laravel: 11.44.1
 PHP: 8.4.4
 MySQL: 8.0
 ```
