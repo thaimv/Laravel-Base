@@ -6,7 +6,7 @@ stages:
 .PhpcsScan: &PhpcsScan |
   pushComment(){
       curl --request POST --header "PRIVATE-TOKEN: $USER_TOKEN" \
-      --form "note=$OUTPUT" --form "path=dudeism.md" \
+      --form "note=$OUTPUT" --form "path=phpscan.md" \
       --form "line=1" --form "line_type=new" \
       https://git.hblab.vn/api/v4/projects/$CI_PROJECT_ID/repository/commits/$CI_COMMIT_SHA/comments
       echo $OUTPUT
@@ -37,19 +37,40 @@ Deploy:
   stage: Deploy
   image: php:8.4
   rules:
-    - if: $CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH == $DEV_DEPLOY_BRANCH
+    - if: $CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH == 'main'
   environment:
-    name: develop
+    name: main
   script:
-    - eval $(ssh-agent -s) && echo "$DEV_DEPLOY_SSH_KEY" | ssh-add -
-    - mkdir -p ~/.ssh
-    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey
-  \n\n" > ~/.ssh/config'
-    - chmod go-wrx ~/.ssh
-    - chmod +x -R .platform-dev
-    - apt-get install -y libzip-dev libpng-dev zip
+    - echo "👉 Installing dependencies..."
+    - apt-get update && apt-get install -y libzip-dev libpng-dev zip wget rsync openssh-client
     - docker-php-ext-install zip gd bcmath pdo_mysql
+    - wget -O /usr/local/bin/composer https://getcomposer.org/download/latest-stable/composer.phar
+    - chmod +x /usr/local/bin/composer
     - composer install && composer dump-autoload
-    - echo "$DEV_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
-    - rsync -azPq --exclude='.git' --exclude='node_modules' ./ $DEV_DEPLOY_USER@$DEV_DEPLOY_HOST:$DEV_DEPLOY_DIR/
-    - ssh $DEV_DEPLOY_USER@$DEV_DEPLOY_HOST "source ~/.profile && cd $DEV_DEPLOY_DIR && php artisan migrate && eb deploy $DEV_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --timeout 30"
+
+    - echo "👉 Debugging Variables..."
+    - echo "DEPLOY_USER=$DEPLOY_USER"
+    - echo "DEPLOY_HOST=$DEPLOY_HOST"
+    - echo "DEPLOY_DIR=$DEPLOY_DIR"
+
+    - echo "👉 Setting up SSH..."
+    - mkdir -p /root/.ssh
+    - echo "$DEPLOY_SSH_KEY" > /root/.ssh/id_rsa
+    - chmod 600 /root/.ssh/id_rsa
+    - touch /root/.ssh/known_hosts
+    - ssh-keyscan -H $DEPLOY_HOST >> /root/.ssh/known_hosts
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey \n\n" > ~/.ssh/config'
+    - chmod 600 /root/.ssh/config
+
+    - echo "👉 Setting up environment..."
+    - echo "$DEPLOY_ENV_FILE" > .env
+    - echo "OK" > public/health.html
+
+    - echo "👉 Verifying HOME directory..."
+    - echo "HOME directory $HOME"
+    - ls -la $HOME
+
+    - echo "👉 Deploying using rsync and migrating..."
+    - rsync -azPq --exclude='.git' --exclude='node_modules' ./ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "source ~/.bashrc && cd $DEPLOY_DIR && php artisan migrate"
+#    - ssh $DEPLOY_USER@$DEPLOY_HOST "source ~/.bashrc && cd $DEPLOY_DIR && php artisan migrate && eb deploy $DEV_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --timeout 30"

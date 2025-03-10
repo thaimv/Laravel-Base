@@ -27,7 +27,9 @@ class ExceptionHandler
                 __('exception.404_route'), ResponseStatus::HTTP_NOT_FOUND, []
             ],
             \Illuminate\Validation\ValidationException::class => [
-                __('exception.422'), ResponseStatus::HTTP_UNPROCESSABLE_ENTITY, $e instanceof ValidationException ? $e->errors() : []
+                __('exception.422'),
+                ResponseStatus::HTTP_UNPROCESSABLE_ENTITY,
+                $e instanceof ValidationException ? $e->errors() : []
             ],
             \Illuminate\Auth\Access\AuthorizationException::class => [
                 __('exception.403'), ResponseStatus::HTTP_FORBIDDEN, []

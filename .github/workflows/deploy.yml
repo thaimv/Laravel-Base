@@ -16,20 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug Variables
-        run: |
-          echo "DEPLOY_USER=${{ vars.DEPLOY_USER }}"
-          echo "DEPLOY_HOST=${{ vars.DEPLOY_HOST }}"
-          echo "DEPLOY_DIR=${{ vars.DEPLOY_DIR }}"
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          printf '%b\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-#          echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null\n" > ~/.ssh/config
-#          chmod 644 ~/.ssh/config
-
       - name: Install dependencies
         run: |
           apt-get update && apt-get install -y libzip-dev libpng-dev zip wget rsync openssh-client
@@ -38,15 +24,41 @@ jobs:
           chmod +x /usr/local/bin/composer
           composer install && composer dump-autoload
 
+      - name: Debug Variables
+        run: |
+          echo "DEPLOY_USER=${{ vars.DEPLOY_USER }}"
+          echo "DEPLOY_HOST=${{ vars.DEPLOY_HOST }}"
+          echo "DEPLOY_DIR=${{ vars.DEPLOY_DIR }}"
+
+      - name: Setup SSH
+        run: |
+          mkdir -p /root/.ssh
+          echo "${{ vars.DEPLOY_SSH_KEY }}" > /root/.ssh/id_rsa
+          chmod 600 /root/.ssh/id_rsa
+          touch /root/.ssh/known_hosts
+          ssh-keyscan -H ${{ vars.DEPLOY_HOST }} >> /root/.ssh/known_hosts
+          cat >> /root/.ssh/config <<EOL
+            Host *
+            StrictHostKeyChecking no
+            ControlMaster auto
+            ControlPath /tmp/ansible-%r@%h:%p
+            ControlPersist 15m
+            PreferredAuthentications publickey
+          EOL
+          chmod 600 /root/.ssh/config
+
       - name: Set up environment
         run: |
           echo "${{ vars.DEPLOY_ENV_FILE }}" > .env
           echo "OK" > public/health.html
 
+      - name: Verify HOME directory
+        run: |
+          echo "HOME directory: $HOME"
+          ls -la $HOME
+
       - name: Deploy using rsync and migrate
         run: |
-          rsync -azPq --exclude='.git' --exclude='node_modules' \
-            -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-            ./ ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}:${{ vars.DEPLOY_DIR}}/
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }} \
-            "source ~/.profile && cd ${{ vars.DEPLOY_DIR}} && php artisan migrate"
+          rsync -azPq --exclude='.git' --exclude='node_modules' ./ ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}:${{ vars.DEPLOY_DIR }}/
+          ssh ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }} "source ~/.bashrc && cd ${{ vars.DEPLOY_DIR }} && php artisan migrate"
+#          ssh ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }} "source ~/.bashrc && cd ${{ vars.DEPLOY_DIR }} && php artisan migrate && eb deploy ${{ secrets.DEV_EB_ENV_NAME }} -l ${{ github.ref_name }}-${{ github.sha }} --timeout 30"
