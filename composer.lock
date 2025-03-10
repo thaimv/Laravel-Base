@@ -3152,16 +3152,16 @@
         },
         {
             "name": "prettus/l5-repository",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andersao/l5-repository.git",
-                "reference": "0ee51e2eb0b21cb75769c56e69494865b76b7f7e"
+                "reference": "27835088f92f42d73cc7f4f98b9386ddba709dcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/0ee51e2eb0b21cb75769c56e69494865b76b7f7e",
-                "reference": "0ee51e2eb0b21cb75769c56e69494865b76b7f7e",
+                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/27835088f92f42d73cc7f4f98b9386ddba709dcf",
+                "reference": "27835088f92f42d73cc7f4f98b9386ddba709dcf",
                 "shasum": ""
             },
             "require": {
@@ -3173,7 +3173,7 @@
                 "illuminate/pagination": "~5.0|~6.0|~7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
                 "illuminate/support": "~5.0|~6.0|~7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
                 "illuminate/validation": "~5.0|~6.0|~7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
-                "prettus/laravel-validation": "~1.1|~1.2|~1.3|~1.4|~1.5|~1.6"
+                "prettus/laravel-validation": "~1.1|~1.2|~1.3|~1.4|~1.5|~1.6|~1.7"
             },
             "suggest": {
                 "league/fractal": "Required to use the Fractal Presenter (0.12.*).",
@@ -3221,7 +3221,7 @@
                 "source": "https://github.com/andersao/l5-repository",
                 "wiki": "https://github.com/andersao/l5-repository"
             },
-            "time": "2025-02-26T17:22:05+00:00"
+            "time": "2025-03-10T11:13:50+00:00"
         },
         {
             "name": "prettus/laravel-validation",
@@ -4027,16 +4027,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v5.20.0",
+            "version": "v5.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "d9887d6320c73a534edc4bc26242ec33d5f2657d"
+                "reference": "e3043f9380a62022e7249890ea918096578c4d78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/d9887d6320c73a534edc4bc26242ec33d5f2657d",
-                "reference": "d9887d6320c73a534edc4bc26242ec33d5f2657d",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/e3043f9380a62022e7249890ea918096578c4d78",
+                "reference": "e3043f9380a62022e7249890ea918096578c4d78",
                 "shasum": ""
             },
             "type": "library",
@@ -4082,9 +4082,9 @@
             ],
             "support": {
                 "issues": "https://github.com/swagger-api/swagger-ui/issues",
-                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.20.0"
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.20.1"
             },
-            "time": "2025-02-27T10:36:24+00:00"
+            "time": "2025-03-10T10:57:35+00:00"
         },
         {
             "name": "symfony/clock",

@@ -3,13 +3,11 @@ name: PHP CS and Hash Key Check
 on:
   push:
     branches:
-      - *
-  pull_request:
-    branches:
-      - main
+      - '**'
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   check-php-cs:
@@ -38,7 +36,7 @@ jobs:
             COMMENT=$(jq -n --arg body "$OUTPUT" '{body: $body}')
             curl --request POST \
               --url https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/comments \
-              --header "Authorization: Bearer ${{ secrets.USER_TOKEN }}" \
+              --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               --header "Content-Type: application/json" \
               --data "$COMMENT"
             exit 1
@@ -63,7 +61,7 @@ jobs:
             COMMENT=$(jq -n --arg body "$OUTPUT" '{body: $body}')
             curl --request POST \
               --url https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/comments \
-              --header "Authorization: Bearer ${{ secrets.USER_TOKEN }}" \
+              --header "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               --header "Content-Type: application/json" \
               --data "$COMMENT"
             exit 1
