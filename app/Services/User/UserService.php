@@ -9,7 +9,9 @@ class UserService implements UserServiceInterface
 {
     public function __construct(
         public UserRepositoryInterface $userRepository,
-    ) { }
+    ) {
+        //
+    }
 
     public function list($params)
     {

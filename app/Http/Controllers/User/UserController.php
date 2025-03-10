@@ -13,7 +13,9 @@ class UserController extends BaseController
 {
     public function __construct(
         public UserServiceInterface $userService,
-    ) { }
+    ) {
+        //
+    }
 
     /**
      * Display a listing of the resource.

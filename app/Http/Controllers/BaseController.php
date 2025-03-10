@@ -28,11 +28,13 @@ class BaseController extends Controller
         return ExceptionHandler::handle($e);
     }
 
-    protected function responseSuccess($data = [], $message = 'success', $status = ResponseStatus::HTTP_OK) {
+    protected function responseSuccess($data = [], $message = 'success', $status = ResponseStatus::HTTP_OK)
+    {
         return Response::success($data, $message, $status);
     }
 
-    protected function responseError($message = 'error', $status = ResponseStatus::HTTP_NOT_FOUND, $errors = []) {
+    protected function responseError($message = 'error', $status = ResponseStatus::HTTP_NOT_FOUND, $errors = [])
+    {
         return Response::error($message, $status, $errors);
     }
 }
