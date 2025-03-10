@@ -45,8 +45,5 @@ jobs:
 
       - name: Deploy using rsync and migrate
         run: |
-          rsync -azPq --exclude='.git' --exclude='node_modules' \
-            -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-            ./ ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}:${{ vars.DEPLOY_DIR}}/
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }} \
-            "source ~/.profile && cd ${{ vars.DEPLOY_DIR}} && php artisan migrate"
+            "source ~/.profile && cd ${{ vars.DEPLOY_DIR}} && php artisan migrate "
