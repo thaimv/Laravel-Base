@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    container:
+      image: php:8.4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEV_DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey\n\n" > ~/.ssh/config
+
+      - name: Install dependencies
+        run: |
+          apt-get update && apt-get install -y libzip-dev libpng-dev zip
+          docker-php-ext-install zip gd bcmath pdo_mysql
+          composer install && composer dump-autoload
+
+      - name: Set up environment
+        run: |
+          echo "${{ secrets.DEV_DEPLOY_ENV_FILE }}" > .env
+          echo "OK" > public/health.html
+
+      - name: Deploy using rsync and migrate
+        run: |
+          rsync -azPq --exclude='.git' --exclude='node_modules' ./ ${{ secrets.DEV_DEPLOY_USER }}@${{ secrets.DEV_DEPLOY_HOST }}:${{ secrets.DEV_DEPLOY_DIR }}/
+          ssh ${{ secrets.DEV_DEPLOY_USER }}@${{ secrets.DEV_DEPLOY_HOST }} "source ~/.profile && cd ${{ secrets.DEV_DEPLOY_DIR }} && php artisan migrate && eb deploy ${{ secrets.DEV_EB_ENV_NAME }} -l ${{ github.ref_name }}-${{ github.sha }} --timeout 30"
